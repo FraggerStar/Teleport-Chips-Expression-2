@@ -1,0 +1,41 @@
+@name tp v1
+@inputs HomePos:vector
+@outputs 
+@persist 
+@trigger 
+@strict
+
+
+if(first()) {
+    hint("E2 by Fragger_Star :3, Wrencher helped with debuging", 7)
+    hint("/tp <player name> to teleport to them", 7)
+    hint("/home to tp home", 7)
+    OwnerPos = owner():pos()
+}
+event chat(Player:entity, Message:string, Team:number) {
+    if(Message:sub(1, 3) == "/tp" & Player == owner()) {
+        hideChat(1)
+        Target = findPlayerByName(Message:sub(5))
+        if(Target:isValid()) {
+            TargetPos = Target:pos()
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", OwnerPos, ang(0), 1)
+            Chr:use()
+            Chr:setPos(TargetPos)
+            Chr:propDelete()
+        } else {
+            hint("An error occured! Target invalid", 7)
+        } 
+        } if(Message:sub(1, 5) == "/home" & Player == owner() & HomePos != vec()) {
+            hideChat(1)
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", OwnerPos, ang(0), 1)
+            Chr:use()
+            Chr:setPos(HomePos)
+            Chr:propDelete()
+        } elseif(Message:sub(1, 5) == "/home" & Player == owner() & HomePos == vec()) {
+            hint("No Home Set!", 7)
+        } 
+        
+}
+
+
+

@@ -1,0 +1,116 @@
+@name Teleport v3 By Fragger
+@inputs 
+@outputs
+@persist 
+@trigger 
+@strict
+
+
+if(first()) {
+    hint("E2 by Fragger_Star :3", 7)
+    hint("/tp <player name> to teleport to them", 7)
+    hint("/sethome to set a home tp point, /home to tp home", 7)
+    hint("/setwaypoint <index> to create a waypoint tp, /waypoint <index> to tp to waypoint", 7)
+    hint("/go to tp to aim posistion", 7)
+    HomePos = vec()
+    Waypoints = array()
+    Alpha = 255
+}
+event chat(Player:entity, Message:string, Team:number) {
+    if(Message:sub(1, 3) == "/tp" & Player == owner()) {
+        hideChat(1)
+        Target = findPlayerByName(Message:sub(4):trim())
+        if(Target:isValid()) {
+            owner():emitSound("ambient/energy/ion_cannon_shot3.wav")
+            holoCreate(1, owner():pos() + vec(0, 0, 45), vec(5, 5, 5), ang(0, 0, 0), vec4(255, 255, 255, 255), "models/sprops/cylinders/size_5/cylinder_12x18.mdl")
+            holoMaterial(1, "models/alyx/emptool_glow")
+            timer(0.0196, 70, function() {
+                holoAlpha(1, Alpha)
+                Alpha = Alpha - 5
+            })
+            timer(2, function()   {
+                holoDelete(1)
+                Alpha = 255
+                owner():emitSoundStop("ambient/energy/ion_cannon_shot3.wav")
+            })
+            TargetPos = Target:pos()
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", owner():pos(), ang(0), 1)
+            Chr:use()
+            Chr:setPos(TargetPos)
+            Chr:propDelete()
+        } else {
+            hint("An error occured! Target invalid", 7)
+        } 
+        } 
+        if(Message == "/sethome" & Player == owner()) {
+            hideChat(1)
+            HomePos = owner():pos()
+            }
+        if(Message:sub(1, 5) == "/home" & Player == owner() & HomePos != vec(0, 0, 0)) {
+            hideChat(1)
+            owner():emitSound("ambient/energy/ion_cannon_shot3.wav")
+            holoCreate(1, owner():pos() + vec(0, 0, 45), vec(5, 5, 5), ang(0, 0, 0), vec4(255, 255, 255, 255), "models/sprops/cylinders/size_5/cylinder_12x18.mdl")
+            holoMaterial(1, "models/alyx/emptool_glow")
+            timer(0.0196, 70, function() {
+                holoAlpha(1, Alpha)
+                Alpha = Alpha - 5
+            })
+            timer(2, function()   {
+                holoDelete(1)
+                Alpha = 255
+                owner():emitSoundStop("ambient/energy/ion_cannon_shot3.wav")
+            })
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", owner():pos(), ang(0), 1)
+            Chr:use()
+            Chr:setPos(HomePos)
+            Chr:propDelete()
+        } elseif(Message:sub(1, 5) == "/home" & Player == owner() & HomePos == vec(0, 0, 0)) {
+            hideChat(1)
+            hint("No Home Set!", 7)
+        } 
+        if(Message:sub(1, 12) == "/setwaypoint" & Player == owner()) {
+            hideChat(1)
+            Waypoints:setVector(Message:sub(14):toNumber(), owner():pos()) # will be updated to indexing operator when i figure it out
+        }
+        if(Message:sub(1, 9) == "/waypoint" & Player == owner()) {      
+            hideChat(1)
+            owner():emitSound("ambient/energy/ion_cannon_shot3.wav")
+            holoCreate(1, owner():pos() + vec(0, 0, 45), vec(5, 5, 5), ang(0, 0, 0), vec4(255, 255, 255, 255), "models/sprops/cylinders/size_5/cylinder_12x18.mdl")
+            holoMaterial(1, "models/alyx/emptool_glow")
+            timer(0.0196, 70, function() {
+                holoAlpha(1, Alpha)
+                Alpha = Alpha - 5
+            })
+            timer(2, function()   {
+                holoDelete(1)
+                Alpha = 255
+                owner():emitSoundStop("ambient/energy/ion_cannon_shot3.wav")
+            })
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", Waypoints:vector(Message:sub(11):toNumber()), ang(0), 1) # see line 47 comment
+            Chr:use()
+            Chr:setPos(owner():aimPos())
+            Chr:propDelete()
+        }
+        if(Message == "/go" & Player == owner()) {
+            hideChat(1)
+            owner():emitSound("ambient/energy/ion_cannon_shot3.wav")
+            holoCreate(1, owner():pos() + vec(0, 0, 45), vec(5, 5, 5), ang(0, 0, 0), vec4(255, 255, 255, 255), "models/sprops/cylinders/size_5/cylinder_12x18.mdl")
+            holoMaterial(1, "models/alyx/emptool_glow")
+            timer(0.0196, 70, function() {
+            holoAlpha(1, Alpha)
+            Alpha = Alpha - 5
+            })
+            timer(2, function()   {
+                holoDelete(1)
+                Alpha = 255
+                owner():emitSoundStop("ambient/energy/ion_cannon_shot3.wav")
+            })
+            Chr = seatSpawn("models/hunter/blocks/cube075x075x075.mdl", owner():aimPos(), ang(0), 1)
+            Chr:use()
+            Chr:setPos(owner():aimPos())
+            Chr:propDelete()
+    }
+}
+
+
+
