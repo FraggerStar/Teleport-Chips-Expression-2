@@ -1,5 +1,5 @@
 # Teleport-Chips-Expression-2
-This is the 4th version of my teleport chip. Written in expression 2 for Garry's mod. Some information is copied strait from the comments of tp v4, and is easier to read in the code box thingy.
+These are teleport chips. Written in expression 2 for Garry's mod. Some information is copied strait from the comments of tp v4, and is easier to read in the code box thingy.
 
 # How to use/install Expressions
 1. You need to own Garry's Mod
